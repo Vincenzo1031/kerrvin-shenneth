@@ -1,0 +1,406 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kerrvin & Shenneth</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f6f1eb">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Soft background aura -->
+  <div class="bg-aurora" aria-hidden="true"></div>
+  <div class="vibe vibe-day" aria-hidden="true"></div>
+  <div class="vibe vibe-night" aria-hidden="true"></div>
+  <div id="shootingStars" class="shooting-stars" aria-hidden="true"></div>
+
+  <!-- INSTALL PROMPT -->
+  <div id="installBanner" class="install-banner hidden">
+    <div class="install-text">
+      <strong>Install this keepsake</strong>
+      <span>So it stays forever — even offline.</span>
+    </div>
+    <button id="installBtn" class="btn btn-primary">Install</button>
+    <button id="installClose" class="btn btn-ghost" aria-label="Close">✕</button>
+  </div>
+
+  <!-- LOGIN SCREEN -->
+  <main id="loginScreen" class="screen">
+    <section class="auth-card glass">
+      <div class="brand">
+        <div class="brand-mark login-logo logo-wrap">
+          <img src="assets/Nevi.png" alt="Nevi Logo" class="logo">
+        </div>
+
+        <div class="brand-title">
+          <h1>Kerrvin & Shenneth</h1>
+          <p class="muted">A love keepsake that lasts.</p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2 class="section-title">Login</h2>
+      <p class="muted small">Enter our secret code to continue.</p>
+
+      <form id="loginForm" class="form">
+        <label class="field">
+          <span>Username</span>
+          <input id="username" type="text" autocomplete="username" placeholder="e.g., Vincenzo" required>
+        </label>
+
+        <label class="field">
+          <span>Password</span>
+          <input id="password" type="password" autocomplete="current-password" placeholder="••••••" required>
+        </label>
+
+        <button class="btn btn-primary" type="submit">Unlock 🤍</button>
+      </form>
+
+      <p id="loginMessage" class="message hidden"></p>
+
+      <div class="hint">
+        <span class="tag">Allowed</span>
+        <span class="muted small">Kerrvin → Vincenzo · Shenneth → Nenetha</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- PROMISES SCREEN -->
+  <main id="promisesScreen" class="screen hidden">
+    <section class="promises glass">
+      <header class="promises-header">
+        <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;">
+          <div class="mini-mark logo-wrap" style="width:42px;height:42px;">
+            <img src="assets/Nevi.png" alt="Nevi Logo" class="logo logo-mini">
+          </div>
+          <h1 class="section-title" style="margin:0;">Promises We Must Uphold</h1>
+        </div>
+        <p class="muted">Not rules. Not pressure. Just the quiet vows we live by — together.</p>
+      </header>
+
+      <div id="promisesList" class="promises-list"></div>
+
+      <div class="promises-actions">
+        <button id="promisesReset" class="btn btn-ghost">Reset</button>
+        <button id="promisesContinue" class="btn btn-primary" disabled>Proceed ✨</button>
+      </div>
+
+      <p id="promisesMessage" class="message hidden"></p>
+    </section>
+  </main>
+
+  <!-- APP SHELL -->
+  <div id="app" class="app hidden">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="mini-mark logo-wrap">
+          <img src="assets/Nevi.png" alt="Nevi Logo" class="logo logo-mini">
+        </div>
+
+        <div class="topbar-text">
+          <div class="topbar-title">Kerrvin & Shenneth</div>
+          <div id="topbarSubtitle" class="topbar-subtitle muted small">Always, with you.</div>
+        </div>
+      </div>
+
+      <button id="openSettings" class="icon-btn" aria-label="Open Settings">⚙</button>
+    </header>
+
+    <!-- PAGES -->
+    <main class="pages">
+
+      <!-- HOME -->
+      <section id="page-home" class="page active">
+        <div class="hero glass">
+          <div class="hero-top">
+            <h1 class="hero-title">Happy Monthsary, My Love 🤍</h1>
+            <p class="hero-names">Kerrvin Langitan <span class="amp">&</span> Shenneth Remos</p>
+            <p class="hero-date muted">Together since <strong>November 6, 2025</strong></p>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat">
+              <div class="stat-label">Time since we started</div>
+              <div id="sinceCounter" class="stat-value">—</div>
+              <div class="muted small">Years · Months · Days · Hours · Minutes · Seconds</div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">Next Monthsary in…</div>
+              <div id="monthsaryCountdown" class="stat-value">—</div>
+              <div class="muted small">Days · Hours · Minutes · Seconds</div>
+            </div>
+          </div>
+
+          <div class="love-note">
+            <div class="love-note-head">
+              <h2>Today’s Love Note 💌</h2>
+              <span class="tag">Daily</span>
+            </div>
+            <p id="dailyNote" class="love-note-text">—</p>
+          </div>
+        </div>
+
+        <div class="quick-cards">
+          <div class="mini-card glass">
+            <h3>Little reminder</h3>
+            <p id="littleReminderText" class="muted">—</p>
+          </div>
+
+          <div class="mini-card glass">
+            <h3>Tonight idea</h3>
+            <p class="muted">Write one line in the timeline about today. Tiny moments become history.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MOOD -->
+      <section id="page-mood" class="page">
+        <div class="page-head">
+          <h1 class="section-title">Mood Check 🌙</h1>
+          <p class="muted">A gentle daily log — so we can understand our hearts better.</p>
+        </div>
+
+        <div class="glass mood-card">
+          <h2 class="subhead">How was your day?</h2>
+          <div id="moodButtons" class="mood-buttons"></div>
+
+          <label class="field">
+            <span>What happened today?</span>
+            <textarea id="moodNote" rows="3" placeholder="A short note…"></textarea>
+          </label>
+
+          <div class="mood-actions-row">
+            <div class="streak">
+              <span class="tag">Mood streak</span>
+              <strong id="moodStreak">0</strong>
+              <span class="muted">consecutive days</span>
+            </div>
+
+            <button id="saveMoodBtn" class="btn btn-primary mood-save-btn">Save Today’s Mood</button>
+          </div>
+
+          <p id="moodSaveMsg" class="message hidden"></p>
+        </div>
+
+        <div class="glass calendar-card">
+          <div class="calendar-head">
+            <button id="calPrev" class="btn btn-ghost">‹</button>
+            <h2 id="calTitle" class="subhead">—</h2>
+            <button id="calNext" class="btn btn-ghost">›</button>
+          </div>
+
+          <div class="calendar-weekdays">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+
+          <div id="calendarGrid" class="calendar-grid"></div>
+          <div id="moodDetail" class="mood-detail hidden"></div>
+        </div>
+      </section>
+
+      <!-- TIMELINE -->
+      <section id="page-timeline" class="page">
+        <div class="page-head">
+          <h1 class="section-title">Our Story</h1>
+          <p class="muted">Moments, milestones, and the small beautiful things.</p>
+        </div>
+
+        <div class="glass timeline-add">
+          <h2 class="subhead">Add a moment</h2>
+          <div class="timeline-form">
+            <label class="field">
+              <span>Date</span>
+              <input id="tlDate" type="date">
+            </label>
+
+            <label class="field">
+              <span>Title</span>
+              <input id="tlTitle" type="text" placeholder="A milestone…">
+            </label>
+
+            <label class="field">
+              <span>Details</span>
+              <input id="tlDesc" type="text" placeholder="A short description…">
+            </label>
+
+            <button id="addTimelineBtn" class="btn btn-primary">Add</button>
+          </div>
+        </div>
+
+        <div id="timelineList" class="timeline"></div>
+      </section>
+
+      <!-- LETTER -->
+      <section id="page-letter" class="page">
+        <div class="page-head">
+          <h1 class="section-title">A Letter</h1>
+          <p class="muted">For the woman I choose — again and again.</p>
+        </div>
+
+        <div class="glass letter-card">
+          <div class="letter-top">
+            <h2 class="subhead">To Shenneth,</h2>
+            <button id="revealLetterBtn" class="btn btn-primary">Read slowly…</button>
+          </div>
+
+          <div class="letter-wrap">
+            <p id="letterText" class="letter hidden"></p>
+          </div>
+        </div>
+
+        <canvas id="particles" class="particles" aria-hidden="true"></canvas>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="page-settings" class="page">
+        <div class="page-head">
+          <h1 class="section-title">Settings</h1>
+          <p class="muted">Small controls for a long-lasting keepsake.</p>
+        </div>
+
+        <div class="glass settings-card">
+
+          <div class="setting-row">
+            <div>
+              <strong>Night mode</strong>
+              <p class="muted small">Elegant dark theme for evenings.</p>
+            </div>
+            <label class="switch">
+              <input id="nightToggle" type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Background music</strong>
+              <p class="muted small">Optional. Plays after Proceed.</p>
+            </div>
+            <label class="switch">
+              <input id="musicToggle" type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Export / Import Data</strong>
+              <p class="muted small">Backup your moods & timeline.</p>
+            </div>
+            <div class="row-actions">
+              <button id="exportDataBtn2" class="btn btn-ghost">Export</button>
+              <label class="btn btn-ghost file-btn">
+                Import
+                <input id="importDataInput2" type="file" accept="application/json" hidden>
+              </label>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Reset promises</strong>
+              <p class="muted small">You’ll need to check them again.</p>
+            </div>
+            <button id="resetPromisesBtn" class="btn btn-ghost">Reset</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="setting-row danger">
+            <div>
+              <strong>Reset all data</strong>
+              <p class="muted small">Deletes moods, timeline, promises — everything.</p>
+            </div>
+            <button id="resetAllBtn" class="btn btn-danger">Reset</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <button id="logoutBtn" class="btn btn-ghost">Logout</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-target="home">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" class="nav-svg" aria-hidden="true">
+            <path d="M4 10.5L12 4l8 6.5V20a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 20v-9.5Z"/>
+            <path d="M9.5 21.5v-6a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v6"/>
+          </svg>
+        </span>
+        <span class="nav-text">Home</span>
+      </button>
+
+      <button class="nav-item" data-target="mood">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" class="nav-svg" aria-hidden="true">
+            <path d="M21 14.2A8.3 8.3 0 0 1 9.8 3a7 7 0 1 0 11.2 11.2Z"/>
+          </svg>
+        </span>
+        <span class="nav-text">Mood</span>
+      </button>
+
+      <button class="nav-item" data-target="timeline">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" class="nav-svg" aria-hidden="true">
+            <path d="M7 6h10"/>
+            <path d="M7 12h10"/>
+            <path d="M7 18h10"/>
+            <path d="M5 6h.01M5 12h.01M5 18h.01"/>
+          </svg>
+        </span>
+        <span class="nav-text">Timeline</span>
+      </button>
+
+      <button class="nav-item" data-target="letter">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" class="nav-svg" aria-hidden="true">
+            <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z"/>
+            <path d="M6 8l6 5 6-5"/>
+          </svg>
+        </span>
+        <span class="nav-text">Letter</span>
+      </button>
+
+      <button class="nav-item" data-target="settings">
+        <span class="nav-ico">
+          <svg viewBox="0 0 24 24" class="nav-svg" aria-hidden="true">
+            <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/>
+            <path d="M19.4 15a7.9 7.9 0 0 0 .1-2l2-1.2-2-3.5-2.3.6a8 8 0 0 0-1.7-1l-.3-2.4H9l-.3 2.4a8 8 0 0 0-1.7 1l-2.3-.6-2 3.5 2 1.2a7.9 7.9 0 0 0 .1 2l-2 1.2 2 3.5 2.3-.6a8 8 0 0 0 1.7 1l.3 2.4h6l.3-2.4a8 8 0 0 0 1.7-1l2.3.6 2-3.5-2-1.2Z"/>
+          </svg>
+        </span>
+        <span class="nav-text">Settings</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- MUSIC -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="assets/OOO.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
